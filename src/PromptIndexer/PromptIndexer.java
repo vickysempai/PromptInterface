@@ -18,10 +18,10 @@ import java.util.StringTokenizer;
  */
 public class PromptIndexer {
     
-    Indexador x=new Indexador();
+    Indexador index=new Indexador();
     
     public void Search(String query){
-        String[] top5 = x.Search(query);
+        String[] top5 = index.Search(query);
         for(int i=0; i<5; i++){
             if (top5==null)break;
             if(top5[i]!="")
@@ -29,37 +29,33 @@ public class PromptIndexer {
     }
     
     public void load(String direction) throws IOException, FileNotFoundException, ClassNotFoundException{
-        x.load(direction);
+        index.load(direction);
     }
     public void Index(String direction) throws Exception{
-        x.Indexar(direction);
+        index.Indexar(direction);
     }
     
     public void ComandReader(String Command) throws Exception{
         StringTokenizer st = new StringTokenizer(Command);
-        String[] lines = {"", "", "", "", ""};
-        int position=0;
+        //String[] lines = {"", "", "", "", "", "", "", "", ""};
+        String[] lines = Command.split(" ");
+        int position=0;/*
         while (st.hasMoreTokens())
             {
             lines[position] = st.nextToken();
             position++;
-            }
-        if(lines[0].equals("indexar")){
-            if(lines[1].equals("-f")) this.Index(lines[2]);
-            else System.out.println("no se reconoce el comando");
-        }
-        else if(lines[0].equals("cargar")){
-            if(lines[1].equals("-p")) this.load(lines[2]);
-            else System.out.println("no se reconoce el comando");
-        }
-        else if(lines[0].equals("buscar")){
-            if(lines[1].equals("-q")) this.Search(lines[2]);
-            else System.out.println("no se reconoce el comando");
+            }*/
+        try{
+        if(lines[0].equals("indexar")&&(lines[1].equals("-f"))) this.Index(lines[2]);
+        
+        else if(lines[0].equals("cargar")&&(lines[1].equals("-p"))) this.load(lines[2]);
+        
+        else if(lines[0].equals("buscar")&&(lines[1].equals("-q"))){
+            this.Search(Command.subSequence(10, Command.length()-5).toString());
         }
         else if(lines[0].equals("exit")){}
-        else
-            System.out.println("no se reconoce el comando");
-                        
+        else System.out.println("no se reconoce el comando");
+        } catch (Exception e) {System.out.println("comando incompleto");}
             }
         
     /**
@@ -78,5 +74,5 @@ public class PromptIndexer {
             thisInstance.ComandReader(line);
         }
         in.close();
-        }
+    }
 }
